@@ -1,4 +1,4 @@
-pragma solidity 0.6.4;
+pragma solidity ^0.5.16;
 
 contract parkingManager{
     
@@ -34,7 +34,7 @@ contract parkingManager{
     }
 
     modifier onlyOwner(){
-        require(owner == msg.sender);
+        require(owner == msg.sender, "only for onwer");
         _;
     }
 
@@ -43,7 +43,7 @@ contract parkingManager{
         owner = msg.sender;
     }
     
-    fallback () external payable {
+    function () external payable {
 
     }
 }
