@@ -1,0 +1,76 @@
+body {
+    background-color: #8395a7;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    height: 100%;
+    font-size: 0;
+}
+
+.parking_container {
+    color: #303952;
+    text-align: center;
+    font-size: 19px;
+    display: inline-block;
+    width: 60%;
+    height: 100%;
+    background: #f7f1e3;
+}
+
+.upside,
+.downside {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.upside {
+    margin-top: 80px;
+}
+
+.downside {
+    margin-top: 100px;
+}
+
+.parking_place {
+    font-size: 18px;
+    font-weight: 700;
+    width: 100px;
+    height: 150px;
+    line-height: 75px;
+    background: #fab1a0;
+}
+
+.parking_content {
+    background: powderblue;
+    width: 100%;
+    height: 100%;
+}
+
+.console_container {
+    color: #F8EFBA;
+    vertical-align: top;
+    text-align: center;
+    font-size: 19px;
+    display: inline-block;
+    width: 40%;
+    height: 100%;
+    background: #303952;
+}
+
+.console_content {
+    background: #0a0e16;
+    text-align: left;
+    width: 100%;
+    height: 100%;
+}
+
+.input_box {
+    margin-top: 80px;
+}
+
+span {
+    margin-top: 5px;
+}
