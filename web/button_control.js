@@ -1,54 +1,55 @@
-const parkingContents = document.querySelector(".parking_content");
+const form = document.querySelector("form");
+const inputBtn = form.querySelector(".in_button");
+const outputBtn = form.querySelector(".out_button");
 
-function paintConsole(text) {
-    const consoleLogList = document.querySelector(".console_log");
-    const consoleLog = document.createElement("li")
-    consoleLog.innerText = text;
-    console.log(consoleLogList);
-    consoleLogList.appendChild(consoleLog);
-}
+const CARS_LS = "cars_info";
 
-function inputEventHandler(event) {
-    const textForm = document.querySelector(".number_input");
-    const textInput = textForm.querySelector("input");
-    const currentNumber = textInput.value;
+const carsList = [];
 
+function outputBtnHandler(event) {
     event.preventDefault();
-    textInput.value = "";
-    console.log(`number: ${currentNumber}`);
-    paintConsole(currentNumber);
-}
-
-
-function inputControl() {
-    const textInput = document.querySelector(".number_input");
-
-    textInput.addEventListener("submit", inputEventHandler);
-}
-
-function insertInputElement() {
-
-    const inputForm = document.createElement("form");
-    const inputTxt = document.createElement("input");
-    // const inputBtn = document.createElement("input");
-
-    inputForm.classList.add("number_input");
-    inputTxt.classList.add("input_box");
-    inputTxt.type = "text";
-    inputTxt.placeholder = "Put Number";
-    // inputBtn.classList.add("input_btn");
-    // inputBtn.type = "button";
-    // inputBtn.value = "OK";
-
-    inputForm.appendChild(inputTxt);
-    // inputForm.appendChild(inputBtn);
-    parkingContents.appendChild(inputForm);
 
 }
+
+
+function paintConsole(carObj) {
+    const consoleContainer = document.querySelector(".console_log");
+    const name = carObj.carNumber;
+    const location = carObj.location;
+    const time = carObj.time;
+    const li = document.createElement("li");
+    li.innerText = `(${time})
+${name} parked at ${location}`;
+    consoleContainer.appendChild(li);
+}
+
+function inputBtnHandler(event) {
+    event.preventDefault();
+    const textElement = document.querySelector(".input_box");
+    const text = textElement.value;
+    const clockElement = document.querySelector(".clock");
+    const time = clockElement.innerText;
+
+    if (text) {
+        const carObj = {
+            carNumber: text,
+            location: null,
+            time: time
+        };
+        carsList.push(carObj);
+
+        localStorage.setItem(CARS_LS, JSON.stringify(carsList));
+        paintConsole(carObj);
+    }
+
+    textElement.value = "";
+
+}
+
 
 function init() {
-    insertInputElement();
-    inputControl();
+    inputBtn.addEventListener("click", inputBtnHandler);
+    outputBtn.addEventListener("click", outputBtnHandler);
 }
 
 init();
