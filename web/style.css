@@ -1,0 +1,146 @@
+@import "reset.css";
+html,
+body {
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.parking_header,
+.console_header {
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    font-size: 50px;
+    font-weight: 700;
+    padding-top: 30px;
+}
+
+.parking_container {
+    color: black;
+    text-align: center;
+    font-size: 19px;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    display: inline-block;
+    width: 1000px;
+    height: 800px;
+    background: #ffffff;
+}
+
+.upside,
+.downside {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.upside,
+.downside {
+    display: flex;
+    margin-top: 60px;
+}
+
+.parking_place {
+    margin: 10px;
+    font-size: 26px;
+    font-weight: 700;
+    width: 100px;
+    height: 150px;
+    line-height: 150px;
+    border: 6px solid black;
+    box-shadow: 0 4px 5px rgba(0, 0, 0, 0.6);
+}
+
+.parking_content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.console_container {
+    vertical-align: top;
+    text-align: center;
+    font-size: 19px;
+    width: 600px;
+    height: 800px;
+}
+
+.console_content {
+    font-weight: 600;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.6);
+    text-align: left;
+    width: 100%;
+    height: 100%;
+    margin-top: 50px;
+    margin-left: 10px;
+}
+
+.console_content .console_title {
+    font-size: 23px;
+}
+
+.console_content li {
+    margin-top: 20px;
+}
+
+form .input_box {
+    font-size: 16.5px;
+    margin-top: 80px;
+    background-color: #ffffff;
+    border: 3px solid black;
+    border-radius: 5px;
+    width: 150px;
+    height: 20px;
+}
+
+form .input_box::placeholder {
+    font-weight: 600;
+}
+
+
+/* .console_content button {
+    all: unset;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: 700;
+    background-color: #ffffff;
+    padding: 3px;
+    width: 55px;
+    text-align: center;
+    border: 3px solid #000000;
+    border-radius: 20px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    margin: 0 10px 0 10px;
+    color: rgb(0, 0, 0)
+} */
+
+
+/* 
+.console_content button:active {
+    transform: scale(0.9);
+} */
+
+.clock {
+    font-size: 25px;
+    margin-top: 20px;
+}
+
+form button {
+    all: unset;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: 700;
+    background-color: #ffffff;
+    width: 40px;
+    height: 23px;
+    text-align: center;
+    border: 3px solid #000000;
+    border-radius: 10px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    margin: 0 10px 0 10px;
+    color: rgb(0, 0, 0)
+}
+
+form button:active {
+    transform: scale(0.9);
+}

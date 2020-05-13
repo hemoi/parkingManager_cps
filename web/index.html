@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link href="style.css" rel="stylesheet" />
+    <title>CPS팀 프로젝트: Smart-Parking</title>
+</head>
+
+<body>
+    <div class="parking_container">
+        <div class="parking_header">
+            <span class="css_title">Parking</span>
+        </div>
+        <div class="parking_content">
+            <div class="clock"></div>
+            <div class="upside">
+                <div class="parking_place" id="1">1A</div>
+                <div class="parking_place" id="2">1B</div>
+                <div class="parking_place" id="3">1C</div>
+                <div class="parking_place" id="4">1D</div>
+            </div>
+            <div class="downside">
+                <div class="parking_place" id="5">1E</div>
+                <div class="parking_place" id="6">1F</div>
+                <div class="parking_place" id="7">1G</div>
+                <div class="parking_place" id="8">1H</div>
+            </div>
+            <form class="number_input">
+                <input type="text" class="input_box" placeholder=" Put Car's Number " />
+                <button class="in_button">IN</button>
+                <button class="out_button">OUT</button>
+            </form>
+
+        </div>
+    </div>
+    <div class="console_container">
+        <div class="console_header">
+            <h1>Console</h1>
+        </div>
+        <div class="console_content">
+            <span class="console_title"><br> >> No.1 Temporary Console Log </span>
+            <!-- <button class="console_clear_btn">CLEAR</button> -->
+            <ul class="console_log">
+            </ul>
+        </div>
+    </div>
+    <script src="clock.js" s></script>
+    <script src="text_control.js"></script>
+    <script src="button_control.js"></script>
+</body>
+
+</html>
