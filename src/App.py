@@ -12,7 +12,7 @@ def abortIfNothing(userID):
         about(404, message="UserID {} doesn't exist".format(userID))
 
 parser = reqparse.RequestParser()
-parser.add_argument('Users', required=True)
+parser.add_argument('users',required=True)
 
 
 class UserClass(Resource):
@@ -24,6 +24,13 @@ class UserClass(Resource):
         abortIfNothing(userID)
         del Users[userID]
         return '', 204
+
+    # for test
+    def put(self, userID):
+        args = parser.parse_args()
+        user = {'location' : 'somewhere'}
+        Users[userID] = user
+        return user, 201
 
 class UserList(Resource):
     def get(self):
@@ -39,10 +46,7 @@ def generator(imgsrc, location):
     userID = plateRecongizer(img)
 
     user['location'] = location
-
     Users[userID] = user
-
-
 
 
 if __name__ == '__main__':
