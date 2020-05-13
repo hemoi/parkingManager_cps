@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Parking Manager</title>
+    <script language="javascript" type="text/javascript" src="./web3.min.js"></script>
+    <script language="javascript" type="text/javascript" src="../build/contracts/parkingManager.json"></script>
+  </head>
+  <body>
+    <script>
+
+        function startApp() {
+          var parkingContractAddress = "0x40dDB93fA5163b6A56F7cB07484b3B9CabdB9d8e";
+          parkingContract = new web3js.eth.Contract(cryptoZombiesABI, parkingContractAddress);
+        }
+
+        window.addEventListener('load', function() {
+
+            // check if metamask exists
+            if (typeof web3 !== 'undefined') {
+            // Mist/MetaMask의 프로바이더 사용
+              web3js = new Web3(web3.currentProvider);
+            } else {
+            }
+    
+            startApp();
+            });
+    </script>
+  </body>
+</html>

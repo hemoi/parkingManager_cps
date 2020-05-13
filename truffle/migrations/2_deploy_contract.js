@@ -1,5 +1,5 @@
-const parkingContract = artifacts.require("./parkingContract.sol");
+var parkingManager = artifacts.require("./parkingManager.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(parkingContract);
+  deployer.deploy(parkingManager);
 };
