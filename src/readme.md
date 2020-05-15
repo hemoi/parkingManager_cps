@@ -1,0 +1,1 @@
+curl http://localhost:5000/users/user1 -d "" -X DELETE -v
