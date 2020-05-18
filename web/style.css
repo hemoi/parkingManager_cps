@@ -15,6 +15,11 @@ body {
     padding-top: 30px;
 }
 
+.console_header {
+    margin-left: 20px;
+    text-align: left;
+}
+
 .parking_container {
     color: black;
     text-align: center;
@@ -47,6 +52,7 @@ body {
     line-height: 150px;
     border: 6px solid black;
     box-shadow: 0 4px 5px rgba(0, 0, 0, 0.6);
+    border-radius: 5px;
 }
 
 .parking_content {
@@ -69,7 +75,7 @@ body {
     text-align: left;
     width: 100%;
     height: 100%;
-    margin-top: 50px;
+    margin-top: 20px;
     margin-left: 10px;
 }
 
@@ -92,6 +98,22 @@ form .input_box {
 }
 
 form .input_box::placeholder {
+    text-align: center;
+    font-weight: 600;
+}
+
+form .input_box_id {
+    font-size: 16.5px;
+    margin-top: 40px;
+    background-color: #ffffff;
+    border: 3px solid black;
+    border-radius: 5px;
+    width: 100px;
+    height: 20px;
+}
+
+form .input_box_id::placeholder {
+    text-align: center;
     font-weight: 600;
 }
 
@@ -141,6 +163,60 @@ form button {
     color: rgb(0, 0, 0)
 }
 
-form button:active {
+form button:active,
+.console_header button:active {
     transform: scale(0.9);
+}
+
+.href {
+    margin-top: 15px;
+}
+
+.database-html {
+    font-size: 20px;
+    color: black;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+div .parked {
+    border: 6px solid seagreen;
+    color: seagreen;
+    animation: fadeIn 1s linear;
+}
+
+div .light {
+    border: 6px solid #b33939;
+    color: #b33939;
+    animation: fadeIn 1s linear;
+}
+
+.color_explain {
+    padding-top: 20px;
+    text-align: left;
+    width: 470px;
+}
+
+.console_header button {
+    all: unset;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: 700;
+    background-color: #ffffff;
+    width: 120px;
+    height: 25px;
+    text-align: center;
+    border: 3px solid #000000;
+    border-radius: 10px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    margin: 0 10px 0 10px;
+    color: rgb(0, 0, 0)
 }

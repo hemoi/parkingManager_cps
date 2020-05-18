@@ -1,0 +1,61 @@
+@import "reset.css";
+.database_contents {
+    width: 1580px;
+    height: 600px;
+    text-align: center;
+    text-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    font-size: 50px;
+    font-weight: 700;
+    padding-top: 30px;
+}
+
+.main_page {
+    color: black;
+    font-size: 25px;
+}
+
+.car_database_diplay {
+    display: inline-block;
+    margin-top: 60px;
+    text-align: center;
+    width: 1200px;
+    height: 500px;
+    border: 6px solid black;
+    border-radius: 20px;
+}
+
+.clock {
+    padding-top: 20px;
+    padding-bottom: 40px;
+    font-size: 30px;
+}
+
+.nothing {
+    margin-top: 150px;
+}
+
+.something {
+    margin-top: 20px;
+    font-size: 30px;
+}
+
+.clear_database {
+    all: unset;
+    font-size: 20px;
+    cursor: pointer;
+    font-weight: 700;
+    background-color: #ffffff;
+    width: 100px;
+    height: 30px;
+    text-align: center;
+    border: 3px solid #000000;
+    border-radius: 10px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.5);
+    margin: 0 10px 0 10px;
+    color: rgb(0, 0, 0)
+}
+
+.clear_database:active {
+    transform: scale(0.9);
+}
