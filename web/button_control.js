@@ -19,9 +19,7 @@ function getJson(event) {
     })
     .then(function (json) {
       Array.from(json).forEach((car) =>
-        console.log(
-          `userID: ${car.userID}\nuserLocation: ${userLocation}\nuserTime: ${userTime}\n`
-        )
+        console.log(`userID: ${car.userID}\nuserLocation: ${userLocation}\n`)
       );
     });
 }
