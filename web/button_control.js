@@ -11,7 +11,6 @@ const CONSOLE_LS = "console_info";
 
 let carsList = [];
 let consoleList = [];
-
 function getJson(event) {
   fetch(`http://127.0.0.1:5000/users`)
     .then(function (response) {
@@ -19,6 +18,11 @@ function getJson(event) {
     })
     .then(function (json) {
       json.forEach((car) =>
+        // car = {
+        //   userID: "",
+        //   userLocation: "",
+        //   userTime: ""
+        // }
         console.log(car)
       );
     });
