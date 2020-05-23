@@ -188,7 +188,7 @@ function init() {
   inputBtn.addEventListener("click", inputBtnHandler);
   outputBtn.addEventListener("click", outputBtnHandler);
   consoleBtn.addEventListener("click", consoleReset);
-  setInterval(getJson, 1000);
+  // setInterval(getJson, 1000);
 }
 
 init();
