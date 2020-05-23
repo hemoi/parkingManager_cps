@@ -14,7 +14,9 @@ api = Api(app)
 Users = {}
 
 # Parking Users
-parkingUsers = {}
+parkingUsers = []
+
+
 
 def abortIfNothing(userID):
     if userID not in parkingUsers:
@@ -33,21 +35,15 @@ web3 = Web3(Web3.HTTPProvider(ganache_url))
 print(web3.isConnected())
 
 class User(BUser):
-    def setLocation(self,location):
-        self.location = location
-
     def setID(self, id):
         self.id = id
+
 
 
 user1 = User("0xFdB2677A8614f3D93b43e41e752b7D3E4060c724", "0e7c2dbf267835791323991fd0431fc753a8fe1f8210d52ba147179c73d1dbe1")
 user2 = User("0x6f1986D51c8b126166c96A0f5bE2D1673e2E5760", "5407241a9295428ee05d4a8e8f8212689da36dadbdad40e0d6d06db5024a0207")
 user3 = User("0x92883fa00eeb8E94D5c1b5118eA5594c173FF7cf", "a1eca58e0e587374e99f06ed4b554f34fd414d376c6620d52554274e7de7511e")
 owner = User("0xE8e885972130F1810B356F5e56b56f17306B7346", "1041dfc41acfd41d6ca19a1c98b39114a34cc6728813c6d7c3de9a600e270af9")
-
-user1.setLocation('1A')
-user2.setLocation('1C')
-user3.setLocation('1G')
 
 user1.setID('user1')
 user2.setID('user2')
@@ -56,6 +52,13 @@ user3.setID('user3')
 Users[user1.id] = user1
 Users[user2.id] = user2
 Users[user3.id] = user3
+
+parkingUser1 = {
+    "userID" : user1.id,
+    "userLocation" : "1A",
+}
+
+parkingUsers.append(parkingUser1)
 
 class UserClass(Resource):
     def get(self, userID):
