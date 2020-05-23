@@ -19,7 +19,7 @@ function getJson(event) {
     })
     .then(function (json) {
       json.forEach((car) =>
-        console.log(car)
+        console.log(`carinfo: ${car.userID} => ${car.userLocation}`)
       );
     });
 }
@@ -184,7 +184,7 @@ function init() {
   inputBtn.addEventListener("click", inputBtnHandler);
   outputBtn.addEventListener("click", outputBtnHandler);
   consoleBtn.addEventListener("click", consoleReset);
-  jsonBtn.addEventListener("click", getJson);
+  setInterval(getJson,1000);
 }
 
 init();
