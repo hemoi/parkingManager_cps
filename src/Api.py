@@ -3,6 +3,7 @@ from flask_restful import reqparse, abort, Api, Resource, fields
 from plate_recognizer import plateProcessor, plateRecongizer
 from web3py import BUser
 from web3 import Web3
+from flask_cors import CORS, cross_origin
 
 
 ### flask setting
@@ -38,7 +39,18 @@ class User(BUser):
     def setID(self, id):
         self.id = id
 
+class ParkingUser(User):
+    def __init__(self, User):
+        self.userID = User.id
+    
+    def setLocation(self, location):
+        self.userLocation = location
 
+    def getInfo(self):
+        tmp = {}
+        tmp["userID"] = self.userID
+        tmp["userLoaction"] = self.userLocation
+        return tmp
 
 user1 = User("0xFdB2677A8614f3D93b43e41e752b7D3E4060c724", "0e7c2dbf267835791323991fd0431fc753a8fe1f8210d52ba147179c73d1dbe1")
 user2 = User("0x6f1986D51c8b126166c96A0f5bE2D1673e2E5760", "5407241a9295428ee05d4a8e8f8212689da36dadbdad40e0d6d06db5024a0207")
@@ -53,12 +65,13 @@ Users[user1.id] = user1
 Users[user2.id] = user2
 Users[user3.id] = user3
 
-parkingUser1 = {
-    "userID" : user1.id,
-    "userLocation" : "1A",
-}
+parking1 = ParkingUser(user1)
+parking1.setLocation('1A')
+parkingUsers.append(parking1.getInfo())
 
-parkingUsers.append(parkingUser1)
+parking2 = ParkingUser(user1)
+parking2.setLocation('1B')
+parkingUsers.append(parking2.getInfo())
 
 class UserClass(Resource):
     def get(self, userID):
@@ -103,4 +116,5 @@ def evtListener(imgsrc, location):
 
 
 if __name__ == '__main__':
+    CORS(app)
     app.run(debug=True)
