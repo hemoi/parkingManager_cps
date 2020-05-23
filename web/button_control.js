@@ -11,6 +11,16 @@ const CONSOLE_LS = "console_info";
 
 let carsList = [];
 let consoleList = [];
+
+
+function delHandler(event){
+    fetch(`http://127.0.0.1:5000/users/user1`,{
+        method: "DELETE",
+        // mode: "no-cors"
+    })
+}
+
+
 function getJson(event) {
   fetch(`http://127.0.0.1:5000/users`)
     .then(function (response) {
@@ -188,7 +198,8 @@ function init() {
   inputBtn.addEventListener("click", inputBtnHandler);
   outputBtn.addEventListener("click", outputBtnHandler);
   consoleBtn.addEventListener("click", consoleReset);
-  setInterval(getJson, 1000);
+  //setInterval(getJson, 1000);
+  jsonBtn.addEventListener("click", delHandler);
 }
 
 init();

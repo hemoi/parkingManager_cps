@@ -19,9 +19,9 @@ parkingUsers = []
 
 
 
-def abortIfNothing(userID):
-    if userID not in parkingUsers:
-        about(404, message="UserID {} doesn't exist".format(userID))
+# def abortIfNothing(userID):
+#     if userID not in parkingUsers:
+#         abort(404, message="UserID {} doesn't exist".format(userID))
 
 parser = reqparse.RequestParser()
 parser.add_argument('users',required=True)
@@ -29,7 +29,7 @@ parser.add_argument('users',required=True)
 
 ### ganache setting
 
-ether = 1000000000000000000
+ether = 10000000000000000
 
 ganache_url = "HTTP://127.0.0.1:7545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
@@ -75,11 +75,12 @@ parkingUsers.append(parking2.getInfo())
 
 class UserClass(Resource):
     def get(self, userID):
-        abortIfNothing(userID)
+        # abortIfNothing(userID)
         return parkingUsers[userID]
 
+    @cross_origin()
     def delete(self, userID):
-        abortIfNothing(userID)
+        # abortIfNothing(userID)
         
         # args = parser.parse_args()
         # time = args['time']
