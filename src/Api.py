@@ -49,7 +49,7 @@ class ParkingUser(User):
     def getInfo(self):
         tmp = {}
         tmp["userID"] = self.userID
-        tmp["userLoaction"] = self.userLocation
+        tmp["userLocation"] = self.userLocation
         return tmp
 
 user1 = User("0xFdB2677A8614f3D93b43e41e752b7D3E4060c724", "0e7c2dbf267835791323991fd0431fc753a8fe1f8210d52ba147179c73d1dbe1")
