@@ -8,21 +8,39 @@ const consoleBtn = document
 
 const CARS_LS = "users";
 const CONSOLE_LS = "console_info";
-const MY_CAR_LOCATION = "1B";
+const MY_CAR_ID = "myCar";
 
 let carsList = [];
 let consoleList = [];
-const tempUser = [
+let tempUser = [
   (user1 = { userID: "Hello", userLocation: "1B", userTime: "15:24:21" }),
   (user2 = { userID: "HI~", userLocation: "1C", userTime: "15:26:12" }),
   (user3 = { userID: "Ohh", userLocation: "1G", userTime: "15:31:42" }),
+  (user4 = { userID: "myCar", userLocation: "1E", userTime: "15:37:42" }),
 ];
 
 function delHandler(event) {
-  const myCarLocation = MY_CAR_LOCATION;
-  fetch(`http://127.0.0.1:5000/users/user1`, {
-    method: "DELETE",
+  // fetch(`http://127.0.0.1:5000/users/${myCarId}`, {
+  //   method: "DELETE",
+  // });
+  const myCarId = MY_CAR_ID;
+  let myCarObjID;
+  let myCarObjLocation;
+  let myCarObjTime;
+  tempUser.forEach(function (user) {
+    if (user.userID === myCarId) {
+      myCarObjID = user.userID;
+      myCarObjLocation = user.userLocation;
+      myCarObjTime = user.userTime;
+    }
   });
+  const myCarObj = {
+    userID: myCarObjID,
+    userLocation: myCarObjLocation,
+    userTime: myCarObjTime,
+  };
+  console.log(`sent DELETE method to <http://127.0.0.1:5000/users/${myCarId}>`);
+  getCarOut(myCarObjLocation, myCarObj);
 }
 
 function checkUserInLS(user) {
@@ -71,27 +89,17 @@ function resetLocalStorage() {
   localStorage.setItem(CARS_LS, JSON.stringify(carsList));
 }
 
-function getCarOut(location) {
+function getCarOut(location, carObj) {
   const carInfos = JSON.parse(localStorage.getItem(CARS_LS));
   if (carInfos) {
     const resetList = carsList.filter(function (car) {
-      const carLocation = car.carLocation;
-      return carLocation !== location;
+      return car.userLocation !== location;
     });
     if (carsList.length === resetList.length) {
       // worng input
     } else {
       carsList = resetList;
       resetLocalStorage();
-      const timeNow = document.querySelector(".clock");
-      const carNumberNow = document.querySelector(".input_box");
-      const locationNow = document.querySelector(".input_box_id");
-
-      const carObj = {
-        userID: carNumberNow.value,
-        userLocation: locationNow.value,
-        userTime: timeNow.innerText,
-      };
       paintConsole(carObj, "out");
       colorHandler(carObj.userLocation, "out");
     }
