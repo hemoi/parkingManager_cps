@@ -6,34 +6,65 @@ const consoleBtn = document
   .querySelector(".console_header")
   .querySelector("button");
 
-const CARS_LS = "cars_info";
+const CARS_LS = "users";
 const CONSOLE_LS = "console_info";
+const MY_CAR_LOCATION = "1B";
 
 let carsList = [];
 let consoleList = [];
+const tempUser = [
+  (user1 = { userID: "Hello", userLocation: "1B", userTime: "15:24:21" }),
+  (user2 = { userID: "HI~", userLocation: "1C", userTime: "15:26:12" }),
+  (user3 = { userID: "Ohh", userLocation: "1G", userTime: "15:31:42" }),
+];
 
 function delHandler(event) {
+  const myCarLocation = MY_CAR_LOCATION;
   fetch(`http://127.0.0.1:5000/users/user1`, {
     method: "DELETE",
-    // mode: "no-cors"
   });
 }
 
-function getJson(event) {
-  fetch(`http://127.0.0.1:5000/users`)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (json) {
-      json.forEach((car) =>
-        // car = {
-        //   userID: "",
-        //   userLocation: "",
-        //   userTime: ""
-        // }
-        console.log(`carinfo: ${car.userID} => ${car.userLocation}`)
-      );
+function checkUserInLS(user) {
+  let userIn = false;
+
+  const userLS = localStorage.getItem(CARS_LS);
+  if (!userLS) {
+    return userIn;
+  } else {
+    const parsedUser = JSON.parse(userLS);
+    parsedUser.forEach(function (userInLS) {
+      if (userInLS.userLocation === user.userLocation) {
+        userIn = true;
+      }
     });
+    return userIn;
+  }
+}
+
+function getJson(event) {
+  // fetch(`http://127.0.0.1:5000/users`)
+  //   .then(function (response) {
+  //     return response.json();
+  //   })
+  //   .then(function (json) {
+  //     json.forEach(function (user) {
+  //       // car = {
+  //       //   userID: "",
+  //       //   userLocation: "",
+  //       //   userTime: ""
+  //       // }
+  //       // console.log(`carinfo: ${car.userID} => ${car.userLocation}`)
+  //       if (!checkUserInLS(user)) {
+  //         saveUserLS(user);
+  //       }
+  //     });
+  //   });
+  tempUser.forEach(function (user) {
+    if (!checkUserInLS(user)) {
+      saveUserLS(user);
+    }
+  });
 }
 
 function resetLocalStorage() {
@@ -44,7 +75,7 @@ function getCarOut(location) {
   const carInfos = JSON.parse(localStorage.getItem(CARS_LS));
   if (carInfos) {
     const resetList = carsList.filter(function (car) {
-      const carLocation = car.location;
+      const carLocation = car.carLocation;
       return carLocation !== location;
     });
     if (carsList.length === resetList.length) {
@@ -57,12 +88,12 @@ function getCarOut(location) {
       const locationNow = document.querySelector(".input_box_id");
 
       const carObj = {
-        carNumber: carNumberNow.value,
-        location: locationNow.value,
-        time: timeNow.innerText,
+        userID: carNumberNow.value,
+        userLocation: locationNow.value,
+        userTime: timeNow.innerText,
       };
       paintConsole(carObj, "out");
-      colorHandler(carObj.location, "out");
+      colorHandler(carObj.userLocation, "out");
     }
   }
 }
@@ -92,9 +123,9 @@ function paintConsoleLS() {
 
 function paintConsole(carObj, status) {
   const consoleContainer = document.querySelector(".console_log");
-  const name = carObj.carNumber;
-  const location = carObj.location;
-  const time = carObj.time;
+  const name = carObj.userID;
+  const location = carObj.userLocation;
+  const time = carObj.userTime;
   const li = document.createElement("li");
 
   if (status === "in") {
@@ -124,31 +155,24 @@ function colorHandler(location, status) {
   });
 }
 
-function inputBtnHandler(event) {
-  event.preventDefault();
-
-  const textElement = document.querySelector(".input_box");
-  const textElementId = document.querySelector(".input_box_id");
-  const text = textElement.value;
-  const textId = textElementId.value;
-  const clockElement = document.querySelector(".clock");
-  const time = clockElement.innerText;
+function saveUserLS(user) {
+  // event.preventDefault();
+  const text = user.userID;
+  const textId = user.userLocation;
+  const time = user.userTime;
 
   if (text && textId) {
     const carObj = {
-      carNumber: text,
-      location: textId,
-      time: time,
+      userID: text,
+      userLocation: textId,
+      userTime: time,
     };
     carsList.push(carObj);
 
     localStorage.setItem(CARS_LS, JSON.stringify(carsList));
     paintConsole(carObj, "in");
-    colorHandler(carObj.location, "in");
+    colorHandler(carObj.userLocation, "in");
   }
-
-  textElement.value = "";
-  textElementId.value = "";
 }
 
 function loadLocalStorage() {
@@ -163,13 +187,13 @@ function loadLocalStorage() {
         ".parking_place"
       );
       const InfoObj = {
-        carNumber: car.carNumber,
-        location: car.location,
-        time: car.time,
+        userID: car.userID,
+        userLocation: car.userLocation,
+        userTime: car.userTime,
       };
       carsList.push(InfoObj);
       parkingLocations.forEach(function (location) {
-        if (car.location === location.id) {
+        if (car.userLocation === location.id) {
           colorHandler(location.id, "in");
         }
       });
@@ -193,10 +217,10 @@ function consoleReset(event) {
 
 function init() {
   loadLocalStorage();
-  inputBtn.addEventListener("click", inputBtnHandler);
-  outputBtn.addEventListener("click", outputBtnHandler);
+  // inputBtn.addEventListener("click", inputBtnHandler);
+  // outputBtn.addEventListener("click", outputBtnHandler);
+  setInterval(getJson, 1000);
   consoleBtn.addEventListener("click", consoleReset);
-  //setInterval(getJson, 1000);
   jsonBtn.addEventListener("click", delHandler);
 }
 
