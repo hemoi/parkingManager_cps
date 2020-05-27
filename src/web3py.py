@@ -2,7 +2,7 @@ import json, sys, time, pprint
 from web3 import Web3
 
 
-ether = 100000000000000000 # 0.1 ether/1hour
+ether = 10000000000000000 # 0.01 ether/ 1 second
 
 ganache_url = "HTTP://127.0.0.1:7545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
