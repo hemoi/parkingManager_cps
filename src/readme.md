@@ -2,8 +2,8 @@
 - **Api.py**  
   - Flask 서버
   - REST로 web과 통신
-    - `curl http://localhost:5000/users -d "" -X GET -v` : dummy 값 생성
-    - `curl http://localhost:5000/users/user1 -d "" -X DELETE -v`: delete
+    - `curl http://localhost:5000/users -d "" -X GET -v`
+    - `curl http://localhost:5000/users/user1 -d "" -X DELETE -v`
   - User class web3py.py의 wallet class로 GANACHE 상호작용
 
   - [ ] 입장시 plate_recognizer 호출 할 수 있게 구현
