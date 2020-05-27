@@ -2,12 +2,11 @@ import json, sys, time, pprint
 from web3 import Web3
 
 
-ether = 100000000000000000
+ether = 100000000000000000 # 0.1 ether/1hour
 
 ganache_url = "HTTP://127.0.0.1:7545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
-print(web3.isConnected())
-web3.eth.defaultAccount=web3.eth.accounts[0]
+# web3.eth.defaultAccount=web3.eth.accounts[0]
 
 """
 accounts = {
@@ -23,7 +22,7 @@ Key = {
 """
 
 
-class BUser():
+class Wallet():
     def __init__(self, account, key):
         self.account = account
         self.key = key
@@ -39,7 +38,7 @@ class BUser():
             gas = 100000,
             value = ether * time,
             to = owner.account,
-            data = b'',
+            data = b'hello',
         ),
         self.key,
         )
@@ -49,18 +48,18 @@ class BUser():
     def sendTransaction(cls, tx):
         return web3.eth.sendRawTransaction(tx)
 
-owner = BUser("0xE8e885972130F1810B356F5e56b56f17306B7346", "1041dfc41acfd41d6ca19a1c98b39114a34cc6728813c6d7c3de9a600e270af9")
+owner = Wallet("0xE8e885972130F1810B356F5e56b56f17306B7346", "1041dfc41acfd41d6ca19a1c98b39114a34cc6728813c6d7c3de9a600e270af9")
 
 
 if __name__ == "__main__":
-    user1 = BUser("0xFdB2677A8614f3D93b43e41e752b7D3E4060c724", "0e7c2dbf267835791323991fd0431fc753a8fe1f8210d52ba147179c73d1dbe1")
-    user2 = BUser("0x6f1986D51c8b126166c96A0f5bE2D1673e2E5760", "5407241a9295428ee05d4a8e8f8212689da36dadbdad40e0d6d06db5024a0207")
-    user3 = BUser("0x92883fa00eeb8E94D5c1b5118eA5594c173FF7cf", "a1eca58e0e587374e99f06ed4b554f34fd414d376c6620d52554274e7de7511e")
-    owner = BUser("0xE8e885972130F1810B356F5e56b56f17306B7346", "1041dfc41acfd41d6ca19a1c98b39114a34cc6728813c6d7c3de9a600e270af9")
+    user1 = Wallet("0xFdB2677A8614f3D93b43e41e752b7D3E4060c724", "0e7c2dbf267835791323991fd0431fc753a8fe1f8210d52ba147179c73d1dbe1")
+    user2 = Wallet("0x6f1986D51c8b126166c96A0f5bE2D1673e2E5760", "5407241a9295428ee05d4a8e8f8212689da36dadbdad40e0d6d06db5024a0207")
+    user3 = Wallet("0x92883fa00eeb8E94D5c1b5118eA5594c173FF7cf", "a1eca58e0e587374e99f06ed4b554f34fd414d376c6620d52554274e7de7511e")
+    owner = Wallet("0xE8e885972130F1810B356F5e56b56f17306B7346", "1041dfc41acfd41d6ca19a1c98b39114a34cc6728813c6d7c3de9a600e270af9")
 
     print(web3.eth.getBlock('latest'))
 
     tx1 = user1.makeTransaction(1)
-    tx = BUser.sendTransaction(tx1)
+    tx = Wallet.sendTransaction(tx1)
 
     print(tx)
