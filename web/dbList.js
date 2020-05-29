@@ -3,6 +3,7 @@ const ulElement = databaseListElement.querySelector(".database_list");
 
 const CARS_LS = "users";
 
+// html에 localStorage내용을 추가해줌
 function showSomething() {
   const cars = JSON.parse(localStorage.getItem(CARS_LS));
 
@@ -14,6 +15,7 @@ function showSomething() {
   });
 }
 
+// Nothing in Database를 html에 추가해줌
 function showNothing() {
   const nothingElement = document.createElement("div");
   nothingElement.classList.add("nothing");
@@ -24,10 +26,9 @@ function showNothing() {
 function showDatabase() {
   const carsInfo = JSON.parse(localStorage.getItem(CARS_LS));
   if (carsInfo && carsInfo.length > 0) {
-    console.dir(carsInfo);
-    showSomething();
+    showSomething(); // localStorage가 있을 때
   } else {
-    showNothing();
+    showNothing(); // localStorage가 비어있을 때
   }
 }
 
