@@ -5,10 +5,12 @@ from web3py import Wallet
 from web3 import Web3
 from flask_cors import CORS, cross_origin
 from datetime import datetime
-import evtListener
 from watchdog.events import FileSystemEventHandler
+from watchdog.observers import Observer
 import threading
 from multiprocessing import Process, Queue
+import os
+import time
 
 ### flask setting
 app = Flask(__name__)
@@ -88,7 +90,7 @@ class UserClass(Resource):
         return parkingUsers[userID]
     
     ## DELETE
-    ## caculating, and paying money with their wallet
+    ## caculating and paying money with their wallet
     @cross_origin()
     def delete(self, userID):
         abortIfNothing(userID)
@@ -114,13 +116,16 @@ api.add_resource(UserList, '/users')
 
 
 ## event Listener
-## 아직 미완 
-class myHandler(FileSystemEventHandler):
+class MyHandler(FileSystemEventHandler):
+
+    def __init__(self):
+        self.event_q = Queue()
+        self.dummyThread = None
 
     def on_created(self, event):
         img = event.src_path
         img = plateProcessor(img)
-
+        print("event! on_created"+ event.src_path)
         # extract plate Number
         # this number is a userID
         plateNum = plateRecongizer(img)
@@ -132,20 +137,48 @@ class myHandler(FileSystemEventHandler):
         tmpParkingUser = ParkingUser(userInfo, '1A')
         parkingUsers[tmpParkingUser.user.id] = tmpParkingUser.getInfo()
 
+    def start(self):
+        self.dummyThread = threading.Thread(target=self._process)
+        self.dummyThread.daemon = True
+        self.dummyThread.start()
 
-def evtListnerInit():
-    t = evtListener.Target()
-    t.run(myHandler)
+    def _process(self):
+        while True:
+            time.sleep(1)
+
+handler = MyHandler()
+handler.start()
+
+eventlist_flag = 0
+evenlist = []
+
+def run_watcher():
+    watchDir = os.getcwd()
+    watchDir = os.path.join(watchDir, 'img')
+    
+    global eventlist_flag, evenlist
+
+    observer = Observer()
+    observer.schedule(handler, watchDir)
+    observer.start()
+
+    try:
+        while True:
+            if eventlist_flag == 0:
+                eventlist_flag = 1
+                while not handler.event_q.empty():
+                    event, ts = handler.event_q.get()
+                    evenlist.append(event)
+                eventlist_flag = 0
+            time.sleep(1)
+    except KeyboardInterrupt:
+        observer.stop()
+    observer.join
 
 
 if __name__ == '__main__':
-    # thread = threading.Thread(target=evtListnerInit())
-    # thread.daemon = True
-    # thread.start()
-
-    # proc = Process(target=evtListnerInit())
-    # proc.start()
-    # proc.join()
-
+    watcher_thread = threading.Thread(target=run_watcher)
+    watcher_thread.start()
     CORS(app)
     app.run(debug=True)
+    watcher_thread.join()
