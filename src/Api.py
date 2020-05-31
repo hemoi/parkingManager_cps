@@ -42,8 +42,9 @@ parser = reqparse.RequestParser()
 parser.add_argument('users',required=True)
 
 # match User to Wallet
-class User(Wallet):
-    def setID(self, id):
+class User():
+    def __init__(self, id, wallet):
+        self.wallet = wallet
         self.id = id
 
 # Users who park their cars
@@ -61,26 +62,30 @@ class ParkingUser():
 
         return tmp
 
-
+walletList = []
 ### set Dummy DATA for testing
-user1 = User("0xFdB2677A8614f3D93b43e41e752b7D3E4060c724", "0e7c2dbf267835791323991fd0431fc753a8fe1f8210d52ba147179c73d1dbe1")
-user2 = User("0x6f1986D51c8b126166c96A0f5bE2D1673e2E5760", "5407241a9295428ee05d4a8e8f8212689da36dadbdad40e0d6d06db5024a0207")
-user3 = User("0x92883fa00eeb8E94D5c1b5118eA5594c173FF7cf", "a1eca58e0e587374e99f06ed4b554f34fd414d376c6620d52554274e7de7511e")
-owner = User("0xE8e885972130F1810B356F5e56b56f17306B7346", "1041dfc41acfd41d6ca19a1c98b39114a34cc6728813c6d7c3de9a600e270af9")
+wallet1 = Wallet("0xFdB2677A8614f3D93b43e41e752b7D3E4060c724", "0e7c2dbf267835791323991fd0431fc753a8fe1f8210d52ba147179c73d1dbe1")
+wallet2 = Wallet("0x6f1986D51c8b126166c96A0f5bE2D1673e2E5760", "5407241a9295428ee05d4a8e8f8212689da36dadbdad40e0d6d06db5024a0207")
+wallet3 = Wallet("0x92883fa00eeb8E94D5c1b5118eA5594c173FF7cf", "a1eca58e0e587374e99f06ed4b554f34fd414d376c6620d52554274e7de7511e")
+ownerWallet = Wallet("0xE8e885972130F1810B356F5e56b56f17306B7346", "1041dfc41acfd41d6ca19a1c98b39114a34cc6728813c6d7c3de9a600e270af9")
 
-user1.setID('user1')
-user2.setID('user2')
-user3.setID('user3')
+walletList.append(wallet1)
+walletList.append(wallet2)
+walletList.append(wallet3)
 
-Users[user1.id] = user1
-Users[user2.id] = user2
-Users[user3.id] = user3
+# user1.setID('user1')
+# user2.setID('user2')
+# user3.setID('user3')
 
-parking1 = ParkingUser(user1,'1A')
-parkingUsers[parking1.user.id] = parking1.getInfo()
+# Users[user1.id] = user1
+# Users[user2.id] = user2
+# Users[user3.id] = user3
 
-parking2 = ParkingUser(user2,'1B')
-parkingUsers[parking2.user.id] = parking2.getInfo()
+# parking1 = ParkingUser(user1,'1A')
+# parkingUsers[parking1.user.id] = parking1.getInfo()
+
+# parking2 = ParkingUser(user2,'1B')
+# parkingUsers[parking2.user.id] = parking2.getInfo()
 
 ### FLASK
 class UserClass(Resource):
@@ -99,8 +104,8 @@ class UserClass(Resource):
         ## parking fee is 0.01 ether * seconds (for testing)
         enterTime = parkingUsers[userID]['enterTime']
         tToSeconds = timeCalculator(enterTime)
-        tx = Users[userID].makeTransaction(tToSeconds)
-        User.sendTransaction(tx)
+        tx = Users[userID].wallet.makeTransaction(tToSeconds)
+        User.wallet.sendTransaction(tx)
 
         # del parkingUsers[userID]
         return '', 204
@@ -114,6 +119,7 @@ class UserList(Resource):
 api.add_resource(UserClass, '/users/<userID>')
 api.add_resource(UserList, '/users')
 
+parkingAvailable = ['1A', '1B', '1C']
 
 ## event Listener
 class MyHandler(FileSystemEventHandler):
@@ -123,19 +129,35 @@ class MyHandler(FileSystemEventHandler):
         self.dummyThread = None
 
     def on_created(self, event):
-        img = event.src_path
-        img = plateProcessor(img)
-        print("event! on_created"+ event.src_path)
+        imgPath = event.src_path
+        print("event! on_created : "+ event.src_path)
+
+        img = plateProcessor(imgPath)
+
         # extract plate Number
         # this number is a userID
         plateNum = plateRecongizer(img)
+        plateNum = plateNum.replace(" ", "")
+        plateNum = plateNum.replace(".", "")
+        plateNum = plateNum.replace("&", "")
+        plateNum = str(plateNum)
+        # IF new car
+        if plateNum not in Users:
+            linkWallet = walletList.pop()
+            newUser = User(plateNum, linkWallet)
+            Users[plateNum] = newUser
 
         # matching this number to user Info
-        userInfo = User[plateNum]
+        userInfo = Users[plateNum]
+
+        # find available location
+        location = parkingAvailable.pop()
 
         # add to ParkingUsers DIC
-        tmpParkingUser = ParkingUser(userInfo, '1A')
+        tmpParkingUser = ParkingUser(userInfo, location)
         parkingUsers[tmpParkingUser.user.id] = tmpParkingUser.getInfo()
+
+        print(plateNum + " enter")
 
     def start(self):
         self.dummyThread = threading.Thread(target=self._process)
@@ -154,7 +176,7 @@ evenlist = []
 
 def run_watcher():
     watchDir = os.getcwd()
-    watchDir = os.path.join(watchDir, 'img')
+    watchDir = os.path.join(watchDir, 'parking')
     
     global eventlist_flag, evenlist
 
