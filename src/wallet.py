@@ -1,8 +1,8 @@
 import json, sys, time, pprint
 from web3 import Web3
 
-
-ether = 10000000000000000 # 0.01 ether/ 1 second
+# one_ether : 1000000000000000000
+ether = 10000000000000000 # 0.01 ether
 
 ganache_url = "HTTP://127.0.0.1:7545"
 web3 = Web3(Web3.HTTPProvider(ganache_url))
@@ -31,14 +31,14 @@ class Wallet():
         balance = web3.eth.getBalance(self.account)
         print(web3.fromWei(balance, "ether"))
     
-    def makeTransaction(self, time):
+    def makeTransaction(self, time, enterTime):
         singed_txn = web3.eth.account.signTransaction(dict(
             nonce =web3.eth.getTransactionCount(web3.eth.coinbase),
             gasPrice =web3.eth.gasPrice,
             gas = 100000,
             value = ether * time,
             to = owner.account,
-            data = b'hello',
+            data = enterTime.encode()
         ),
         self.key,
         )

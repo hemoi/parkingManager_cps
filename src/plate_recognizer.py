@@ -22,10 +22,11 @@ def plateRecongizer(img):
 
 
 if __name__ == "__main__":
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-    imgPath = BASE_DIR +"/img/"
-    imgName = imgPath + "plate3.jpg"
-
+    # BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # imgPath = BASE_DIR +"/img/"
+    # imgName = imgPath + "plate.jpg"
+    # print(imgName)
+    imgName = '/home/hemoi/workspace/parkingManager_cps/src/parking/plate.jpg'
     img = plateProcessor(imgName)
 
     plateNum = plateRecongizer(img)
