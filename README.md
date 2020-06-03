@@ -15,7 +15,7 @@
   ㄴ web3py.py  
   ㄴ wallet.py
 
-- web
+- web  
   ㄴ index.html, database.html: 웹 페이지를 위한 기보적인 틀  
   ㄴ button_control.js: 프로그램의 전체적인 기능을 위한 파일(서버 통신, 주차 기능, 정보 저장, 주차공간 시각화 등)  
   ㄴ clock.js: 메인 페이지에서 시계 기능을 위한 파일(Date)  
