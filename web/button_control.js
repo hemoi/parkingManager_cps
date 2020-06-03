@@ -100,8 +100,9 @@ function resetLocalStorage() {
 // 차의 위치와 차의 정보(객체)를 가지고 localStorage에서 해당 차의 객체를 삭제
 function getCarOut(location, carObj) {
   const carInfos = JSON.parse(localStorage.getItem(CARS_LS));
+
   if (carInfos) {
-    const resetList = carsList.filter(function (car) {
+    const resetList = carsList.filter((car) => {
       return car.userLocation !== location;
     });
     if (carsList.length === resetList.length) {
@@ -116,18 +117,18 @@ function getCarOut(location, carObj) {
 }
 
 // will be replaced
-function outputBtnHandler(event) {
-  event.preventDefault();
-  const numberElement = document.querySelector(".input_box");
-  const locationElement = document.querySelector(".input_box_id");
-  const number = numberElement.value;
-  const location = locationElement.value;
-  if (location && number) {
-    getCarOut(location);
-    locationElement.value = "";
-    numberElement.value = "";
-  }
-}
+// function outputBtnHandler(event) {
+//   event.preventDefault();
+//   const numberElement = document.querySelector(".input_box");
+//   const locationElement = document.querySelector(".input_box_id");
+//   const number = numberElement.value;
+//   const location = locationElement.value;
+//   if (location && number) {
+//     getCarOut(location);
+//     locationElement.value = "";
+//     numberElement.value = "";
+//   }
+// }
 
 // html 콘솔로그창 요소에 새로운 li태그를 만들어 추가한다.
 function paintConsoleLS() {
