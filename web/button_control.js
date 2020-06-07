@@ -75,30 +75,30 @@ function getJson(event) {
 
   let inCars = [];
   // ### real use ###
-  fetch(`http://127.0.0.1:5000/users`)
-    .then(function (response) {
-      return response.json();
-    })
-    .then(function (json) {
-      // saving
-      json.forEach(function (user) {
-        const car = {
-          userID: "",
-          userLocation: "",
-          userTime: "",
-        };
-        if (!checkUserInLS(user)) {
-          saveUserLS(user);
-        }
-      });
-      parkingLS.forEach((oneCar) => {
-        if (
-          json.findIndex((car) => car.userLocation === oneCar.userLocation) < 0
-        ) {
-          getCarOut(oneCar.userLocation, oneCar);
-        }
-      });
-    });
+  // fetch(`http://127.0.0.1:5000/users`)
+  //   .then(function (response) {
+  //     return response.json();
+  //   })
+  //   .then(function (json) {
+  //     // saving
+  //     json.forEach(function (user) {
+  //       const car = {
+  //         userID: "",
+  //         userLocation: "",
+  //         userTime: "",
+  //       };
+  //       if (!checkUserInLS(user)) {
+  //         saveUserLS(user);
+  //       }
+  //     });
+  //     parkingLS.forEach((oneCar) => {
+  //       if (
+  //         json.findIndex((car) => car.userLocation === oneCar.userLocation) < 0
+  //       ) {
+  //         getCarOut(oneCar.userLocation, oneCar);
+  //       }
+  //     });
+  //   });
 
   // tempUser.forEach(function (user) {
   //   if (!checkUserInLS(user)) {
@@ -264,14 +264,16 @@ function delMethodHandler(event) {
   event.preventDefault();
   const id = event.target; // 1A, 1B, etc.
   const lotLS = JSON.parse(localStorage.getItem(CARS_LS));
-  lotLS.forEach((lot) => {
-    if (lot.id === id) {
-      console.log(lot.id);
-      fetch(`http://127.0.0.1:5000/users/${lot.userId}`, {
-        method: "DELETE",
-      });
-    }
-  });
+  if (lotLS) {
+    lotLS.forEach((lot) => {
+      if (lot.id === id) {
+        console.log(lot.id);
+        fetch(`http://127.0.0.1:5000/users/${lot.userId}`, {
+          method: "DELETE",
+        });
+      }
+    });
+  }
 }
 
 function init() {
@@ -282,7 +284,7 @@ function init() {
   Array.from(parkingPlaces).forEach((place) => {
     addEventListener("click", delMethodHandler);
   });
-  setInterval(getJson, 1000); // 서버에서 일정 시간마다 getJson을 호출함
+  setInterval(getJson, 2000); // 서버에서 일정 시간마다 getJson을 호출함
   consoleBtn.addEventListener("click", consoleReset); // 삭제 버튼
 }
 
