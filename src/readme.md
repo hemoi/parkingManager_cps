@@ -6,7 +6,10 @@
   - REST API로 web과 통신
     - `curl http://localhost:5000/users/<차량번호판> -d "" -X DELETE -v`
   - user와 연결된 wallet으로 GANACHE 상호작용
-     
+  - 만약 차량이 나갈 경우
+      - 들어온 시간과 현재 시간을 계산한다.
+      - 현재의 가격은 1초당 0.1 ether임
+      - 나가는 경우 wallet.py를 활용해서 ganache와 통신을 한다.   
 
   
 ### plate_recognizer.py
