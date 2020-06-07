@@ -2,10 +2,11 @@
 ### flask_server.py
   - Flask 서버
   - watchdog
-    - img DIR에 있는 번호판 사진을 parking DIR에 넣을 경우 event발생
-  - REST로 web과 통신
+    - parking DIR에 이미지 파일이 생성됐을 경우 event발생
+  - REST API로 web과 통신
     - `curl http://localhost:5000/users/<차량번호판> -d "" -X DELETE -v`
   - user와 연결된 wallet으로 GANACHE 상호작용
+     
 
   
 ### plate_recognizer.py

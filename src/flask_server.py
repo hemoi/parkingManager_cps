@@ -22,14 +22,13 @@ Users = {}
 ### Parking Users' info
 parkingUsers = {}
 
-idToPath = {}
-
 # for error handling
 def abortIfNothing(userID):
     if userID not in parkingUsers:
         abort(404, message="UserID {} doesn't exist".format(userID))
 
 # calculate FEE
+# 0.01 ether per 1 second
 def timeCalculator(enterTime):
     checkTime = datetime.now() - enterTime
     print(str(checkTime.seconds) + " seconds")
@@ -54,6 +53,7 @@ class ParkingUser():
         self.userLocation = location
         self.enterTime = enterTime
     
+    # return user data for web
     def getInfo(self):
         tmp = {}
         tmp["userID"] = self.user.id
@@ -63,7 +63,8 @@ class ParkingUser():
         return tmp
 
 walletList = []
-### set Dummy DATA for testing
+
+### make wallets
 wallet1 = Wallet("0xFdB2677A8614f3D93b43e41e752b7D3E4060c724", "0e7c2dbf267835791323991fd0431fc753a8fe1f8210d52ba147179c73d1dbe1")
 wallet2 = Wallet("0x6f1986D51c8b126166c96A0f5bE2D1673e2E5760", "5407241a9295428ee05d4a8e8f8212689da36dadbdad40e0d6d06db5024a0207")
 wallet3 = Wallet("0x92883fa00eeb8E94D5c1b5118eA5594c173FF7cf", "a1eca58e0e587374e99f06ed4b554f34fd414d376c6620d52554274e7de7511e")
@@ -115,7 +116,8 @@ class UserList(Resource):
 api.add_resource(UserClass, '/users/<userID>')
 api.add_resource(UserList, '/users')
 
-parkingAvailable = ['1A', '1B', '1F']
+# pop parking area
+parkingAvailable = ['1A', '1C', '1F']
 
 ## event Listener
 class MyHandler(FileSystemEventHandler):
@@ -123,20 +125,21 @@ class MyHandler(FileSystemEventHandler):
     def __init__(self):
         self.event_q = Queue()
         self.dummyThread = None
-
+    
+    # if img is created
     def on_created(self, event):
         imgPath = event.src_path
         print("event! on_created : "+ event.src_path)
         img = plateProcessor(imgPath)
 
-        # extract plate Number
-        # this number is a userID
+        # get plate Number from img
         plateNum = plateRecongizer(img)
         plateNum = plateNum.replace(" ", "")
         plateNum = plateNum.replace(".", "")
         plateNum = plateNum.replace("&", "")
         plateNum = str(plateNum)
-        # IF new car
+        
+        # If there aren't any wallet
         if plateNum not in Users:
             linkWallet = walletList.pop()
             newUser = User(plateNum, linkWallet)
