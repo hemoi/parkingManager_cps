@@ -44,6 +44,7 @@ body {
 }
 
 .parking_place {
+  color: seagreen;
   margin: 10px;
   font-size: 26px;
   font-weight: 700;

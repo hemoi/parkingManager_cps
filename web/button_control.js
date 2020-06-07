@@ -1,6 +1,7 @@
 // document객체를 이용해 html 요소들을 사용하기 위함
 const jsonBtn = document.getElementById("json_btn");
 const form = document.querySelector("form");
+const parkingPlaces = document.getElementsByClassName("parking_place");
 // const outputBtn = form.querySelector(".out_button");
 const consoleBtn = document
   .querySelector(".console_header")
@@ -259,12 +260,29 @@ function consoleReset(event) {
   window.location.reload();
 }
 
+function delMethodHandler(event) {
+  event.preventDefault();
+  const id = event.target; // 1A, 1B, etc.
+  const lotLS = JSON.parse(localStorage.getItem(CARS_LS));
+  lotLS.forEach((lot) => {
+    if (lot.id === id) {
+      console.log(lot.id);
+      fetch(`http://127.0.0.1:5000/users/${lot.userId}`, {
+        method: "DELETE",
+      });
+    }
+  });
+}
+
 function init() {
   loadLocalStorage();
   // ### don't need these(will be deleted) ###
   // outputBtn.addEventListener("click", outputBtnHandler);
   // jsonBtn.addEventListener("click", delHandler); // out 버튼
-  setInterval(getJson, 2000); // 서버에서 일정 시간마다 getJson을 호출함
+  Array.from(parkingPlaces).forEach((place) => {
+    addEventListener("click", delMethodHandler);
+  });
+  setInterval(getJson, 1000); // 서버에서 일정 시간마다 getJson을 호출함
   consoleBtn.addEventListener("click", consoleReset); // 삭제 버튼
 }
 
