@@ -59,7 +59,7 @@ if __name__ == "__main__":
 
     print(web3.eth.getBlock('latest'))
 
-    tx1 = user1.makeTransaction(1)
+    tx1 = user1.makeTransaction(1, "")
     tx = Wallet.sendTransaction(tx1)
 
     print(tx)

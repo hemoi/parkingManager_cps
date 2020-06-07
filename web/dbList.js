@@ -23,6 +23,7 @@ function showNothing() {
   ulElement.appendChild(nothingElement);
 }
 
+// DB의 상황을 보여주는 함수
 function showDatabase() {
   const carsInfo = JSON.parse(localStorage.getItem(CARS_LS));
   if (carsInfo && carsInfo.length > 0) {

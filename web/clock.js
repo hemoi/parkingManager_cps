@@ -1,5 +1,6 @@
 const clock = document.querySelector(".clock");
 
+// 시간을 표시해주는 함수
 function paintTime(day, hour, min, sec) {
   switch (day) {
     case 0:
@@ -29,6 +30,7 @@ function paintTime(day, hour, min, sec) {
   }:${sec < 10 ? `0${sec}` : sec}`;
 }
 
+// Date 객체를 활용해 시간을 설정한다
 function getTime() {
   const date = new Date();
   const min = date.getMinutes();
