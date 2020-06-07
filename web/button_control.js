@@ -71,6 +71,7 @@ function checkUserInLS(user) {
 // 해당 json파일을 파싱해 localStorage에 저장한다.
 function getJson(event) {
   const parkingLS = JSON.parse(localStorage.getItem(CARS_LS));
+
   let inCars = [];
   // ### real use ###
   fetch(`http://127.0.0.1:5000/users`)
@@ -183,7 +184,11 @@ function colorHandler(location, status) {
         place.classList.add("light");
       } else if (status === "in") {
         place.classList.remove("light");
-        place.classList.add("parked");
+        if (place.id === "1F") {
+          place.classList.add("myCarPlace");
+        } else {
+          place.classList.add("parked");
+        }
       }
     }
   });
