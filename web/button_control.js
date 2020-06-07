@@ -75,30 +75,30 @@ function getJson(event) {
 
   let inCars = [];
   // ### real use ###
-  // fetch(`http://127.0.0.1:5000/users`)
-  //   .then(function (response) {
-  //     return response.json();
-  //   })
-  //   .then(function (json) {
-  //     // saving
-  //     json.forEach(function (user) {
-  //       const car = {
-  //         userID: "",
-  //         userLocation: "",
-  //         userTime: "",
-  //       };
-  //       if (!checkUserInLS(user)) {
-  //         saveUserLS(user);
-  //       }
-  //     });
-  //     parkingLS.forEach((oneCar) => {
-  //       if (
-  //         json.findIndex((car) => car.userLocation === oneCar.userLocation) < 0
-  //       ) {
-  //         getCarOut(oneCar.userLocation, oneCar);
-  //       }
-  //     });
-  //   });
+  fetch(`http://127.0.0.1:5000/users`)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (json) {
+      // saving
+      json.forEach(function (user) {
+        const car = {
+          userID: "",
+          userLocation: "",
+          userTime: "",
+        };
+        if (!checkUserInLS(user)) {
+          saveUserLS(user);
+        }
+      });
+      parkingLS.forEach((oneCar) => {
+        if (
+          json.findIndex((car) => car.userLocation === oneCar.userLocation) < 0
+        ) {
+          getCarOut(oneCar.userLocation, oneCar);
+        }
+      });
+    });
 
   // tempUser.forEach(function (user) {
   //   if (!checkUserInLS(user)) {
@@ -164,9 +164,9 @@ function paintConsole(carObj, status) {
   const li = document.createElement("li");
 
   if (status === "in") {
-    li.innerText = ` (${time}) [ ${name} ] [ ${location} ] Parked`;
+    li.innerText = ` [ ${name} ] [ ${location} ] Parked`;
   } else {
-    li.innerText = ` (${time}) [ ${name} ] [ ${location} ] Out `;
+    li.innerText = ` [ ${name} ] [ ${location} ] Out `;
   }
   consoleList.push(li.innerText);
   localStorage.setItem(CONSOLE_LS, JSON.stringify(consoleList));
@@ -183,6 +183,11 @@ function colorHandler(location, status) {
     if (place.id === location) {
       if (status === "out") {
         place.classList.add("light");
+        place.classList.forEach(color => {
+          if(color === "myCarPlace" || color === "parked"){
+            place.classList.remove(color);
+          }
+        })
       } else if (status === "in") {
         place.classList.remove("light");
         if (place.id === "1F") {
@@ -261,14 +266,15 @@ function consoleReset(event) {
 }
 
 function delMethodHandler(event) {
-  event.preventDefault();
-  const id = event.target; // 1A, 1B, etc.
+  // event.preventDefault();
+  const id = event.target.id; // 1A, 1B, etc.
   const lotLS = JSON.parse(localStorage.getItem(CARS_LS));
   if (lotLS) {
     lotLS.forEach((lot) => {
-      if (lot.id === id) {
+      console.log(lot, id);
+      if (lot.userLocation === id) {
         console.log(lot.id);
-        fetch(`http://127.0.0.1:5000/users/${lot.userId}`, {
+        fetch(`http://127.0.0.1:5000/users/${lot.userID}`, {
           method: "DELETE",
         });
       }

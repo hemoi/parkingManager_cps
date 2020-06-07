@@ -22,6 +22,7 @@ Users = {}
 ### Parking Users' info
 parkingUsers = {}
 
+idToPath = {}
 
 # for error handling
 def abortIfNothing(userID):
@@ -57,7 +58,7 @@ class ParkingUser():
         tmp = {}
         tmp["userID"] = self.user.id
         tmp["userLocation"] = self.userLocation
-        tmp["enterTime"] = self.enterTime.isoformat()
+        tmp["userTime"] = self.enterTime.isoformat()
 
         return tmp
 
@@ -114,7 +115,7 @@ class UserList(Resource):
 api.add_resource(UserClass, '/users/<userID>')
 api.add_resource(UserList, '/users')
 
-parkingAvailable = ['1A', '1B', '1C']
+parkingAvailable = ['1A', '1B', '1F']
 
 ## event Listener
 class MyHandler(FileSystemEventHandler):
@@ -126,7 +127,6 @@ class MyHandler(FileSystemEventHandler):
     def on_created(self, event):
         imgPath = event.src_path
         print("event! on_created : "+ event.src_path)
-
         img = plateProcessor(imgPath)
 
         # extract plate Number
@@ -142,6 +142,8 @@ class MyHandler(FileSystemEventHandler):
             newUser = User(plateNum, linkWallet)
             Users[plateNum] = newUser
 
+
+
         # matching this number to user Info
         userInfo = Users[plateNum]
 
@@ -153,6 +155,7 @@ class MyHandler(FileSystemEventHandler):
         parkingUsers[plateNum] = tmpParkingUser
 
         print(plateNum + " enter")
+    
 
     def start(self):
         self.dummyThread = threading.Thread(target=self._process)
@@ -164,7 +167,7 @@ class MyHandler(FileSystemEventHandler):
             time.sleep(1)
 
 handler = MyHandler()
-handler.start()
+# handler.start()
 
 eventlist_flag = 0
 evenlist = []
@@ -196,6 +199,7 @@ def run_watcher():
 if __name__ == '__main__':
     watcher_thread = threading.Thread(target=run_watcher)
     watcher_thread.start()
+
     CORS(app)
     app.run(debug=True)
     watcher_thread.join()
