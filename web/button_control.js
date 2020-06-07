@@ -10,6 +10,7 @@ const consoleBtn = document
 const CARS_LS = "users";
 const CONSOLE_LS = "console_info";
 const MY_CAR_ID = "myCar";
+``;
 
 let carsList = []; // localStorge의 "users"의 정보를 담는 리스트
 let consoleList = []; // localStorage의 "console_info"의 정보를 담는 리스트
@@ -261,7 +262,7 @@ function consoleReset(event) {
 }
 
 function delMethodHandler(event) {
-  event.preventDefault();
+  // event.preventDefault();
   const id = event.target; // 1A, 1B, etc.
   const lotLS = JSON.parse(localStorage.getItem(CARS_LS));
   if (lotLS) {
