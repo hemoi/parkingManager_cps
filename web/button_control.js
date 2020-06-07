@@ -22,29 +22,30 @@ let tempUser = [
 ];
 
 // 자신의 차의 정보를 이용해 getCarOut(차를 빼는 함수)을 호출한다.
-function delHandler(event) {
-  // ### real use ###
-  // fetch(`http://127.0.0.1:5000/users/${myCarId}`, {
-  //   method: "DELETE",
-  // });
-  const myCarId = MY_CAR_ID;
-  let myCarObjID;
-  let myCarObjLocation;
-  let myCarObjTime;
-  tempUser.forEach(function (user) {
-    if (user.userID === myCarId) {
-      myCarObjID = user.userID;
-      myCarObjLocation = user.userLocation;
-      myCarObjTime = user.userTime;
-    }
-  });
-  const myCarObj = {
-    userID: myCarObjID,
-    userLocation: myCarObjLocation,
-    userTime: myCarObjTime,
-  };
-  getCarOut(myCarObjLocation, myCarObj);
-}
+// function delHandler(event) {
+//   // ### real use ###
+//   // fetch(`http://127.0.0.1:5000/users/${myCarId}`, {
+//   //   method: "DELETE",
+//   // });
+//   const myCarId = MY_CAR_ID;
+
+//   let myCarObjID;
+//   let myCarObjLocation;
+//   let myCarObjTime;
+//   tempUser.forEach(function (user) {
+//     if (user.userID === myCarId) {
+//       myCarObjID = user.userID;
+//       myCarObjLocation = user.userLocation;
+//       myCarObjTime = user.userTime;
+//     }
+//   });
+//   const myCarObj = {
+//     userID: myCarObjID,
+//     userLocation: myCarObjLocation,
+//     userTime: myCarObjTime,
+//   };
+//   getCarOut(myCarObjLocation, myCarObj);
+// }
 
 // "users"에 중복되는 정보가 추가되는 것을 방지하기 위한 필터링 함수
 // return true if user, false if not user
@@ -52,6 +53,7 @@ function checkUserInLS(user) {
   let userIn = false;
 
   const userLS = localStorage.getItem(CARS_LS);
+
   if (!userLS) {
     return userIn;
   } else {
@@ -68,29 +70,39 @@ function checkUserInLS(user) {
 // fetch api를 이용해 setInterval에서 설정한 간격마다 서버에서 json파일을 받아옴
 // 해당 json파일을 파싱해 localStorage에 저장한다.
 function getJson(event) {
+  const parkingLS = JSON.parse(localStorage.getItem(CARS_LS));
+  let inCars = [];
   // ### real use ###
-  // fetch(`http://127.0.0.1:5000/users`)
-  //   .then(function (response) {
-  //     return response.json();
-  //   })
-  //   .then(function (json) {
-  //     json.forEach(function (user) {
-  //       // car = {
-  //       //   userID: "",
-  //       //   userLocation: "",
-  //       //   userTime: ""
-  //       // }
-  //       // console.log(`carinfo: ${car.userID} => ${car.userLocation}`)
-  //       if (!checkUserInLS(user)) {
-  //         saveUserLS(user);
-  //       }
-  //     });
-  //   });
-  tempUser.forEach(function (user) {
-    if (!checkUserInLS(user)) {
-      saveUserLS(user);
-    }
-  });
+  fetch(`http://127.0.0.1:5000/users`)
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (json) {
+      // saving
+      json.forEach(function (user) {
+        const car = {
+          userID: "",
+          userLocation: "",
+          userTime: "",
+        };
+        if (!checkUserInLS(user)) {
+          saveUserLS(user);
+        }
+      });
+      parkingLS.forEach((oneCar) => {
+        if (
+          json.findIndex((car) => car.userLocation === oneCar.userLocation) < 0
+        ) {
+          getCarOut(oneCar.userLocation, oneCar);
+        }
+      });
+    });
+
+  // tempUser.forEach(function (user) {
+  //   if (!checkUserInLS(user)) {
+  //     saveUserLS(user);
+  //   }
+  // });
 }
 
 function resetLocalStorage() {
@@ -246,9 +258,9 @@ function init() {
   loadLocalStorage();
   // ### don't need these(will be deleted) ###
   // outputBtn.addEventListener("click", outputBtnHandler);
+  // jsonBtn.addEventListener("click", delHandler); // out 버튼
   setInterval(getJson, 2000); // 서버에서 일정 시간마다 getJson을 호출함
   consoleBtn.addEventListener("click", consoleReset); // 삭제 버튼
-  jsonBtn.addEventListener("click", delHandler); // out 버튼
 }
 
 init();
