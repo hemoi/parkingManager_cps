@@ -10,10 +10,9 @@
 ## DIR구조
 
 - src  
-  ㄴ flask_server.py  
-  ㄴ plate_recognizer.py  
-  ㄴ web3py.py  
-  ㄴ wallet.py
+  ㄴ flask_server.py: 웹과 연결  
+  ㄴ plate_recognizer.py: 번호판 이미지를 받아서 string 값을 추출함  
+  ㄴ wallet.py: local blockchain과 통신
 
 - web  
   ㄴ index.html, database.html: 웹 페이지를 위한 기보적인 틀  
@@ -33,3 +32,33 @@
 - web3 5.9.0
 - Flask 1.1.2
 - Flask-restful 0.3.8
+
+## Flow
+`python flask_server.py` : flask 서버 실행
+### 진입
+1. 번호판 이미지 pakring 폴더에 생성
+2. watchdog library를 이용, 이미지의 생성을 감지함
+3. 이후 plate_recognizer.py 이용, 생성 된 이미지에서 string을 추출
+>  1. plateProcessor에서 이미지 전처리가 일어남
+>  2. plateRecognizer에서 pytesseract library를 이용해서 text를 추출
+4. 추출한 번호판의 정보를 유저의 정보(지갑)과 연결
+>  - 만약 지갑이 없을 경우, 사용 가능한 wallet을 번호판 정보와 연결
+5. parkingUser 클래스의 객체를 생성
+>  - 해당 클래스에는 현재 시간, 주차 장소, 유저 정보가 들어감
+6. parkingUserList 리스트에 추가
+>  - 이후 웹에서는 해당 정보를 json 형식으로 받는다.
+  
+### 출차
+1. 웹에서 나가는 이벤트 발생
+>  - delete 요청을 서버로 보냄
+2. 서버는 해당 요청을 받음
+> 1. 해당 parkingUser 객체에서 user 정보 확인
+> 2. 연결된 wallet을 확인
+> 3. 현재 시간과 들어 온시간을 비교해서 주차 시간 계산
+> 4. 요금 계산
+3. 계산된 요금과 연결된 wallet을 이용 블록체인을 통해 요금을 정산한다.
+> 1. rawTx를 만듦
+> 2. 보관 중인 개인키를 통해서 서명
+> 3. 블록체인 네트워크(ganache)로 전송
+4. 이후 parkingUser 객체 삭제
+> - 웹에서 이를 감지해서 반영
