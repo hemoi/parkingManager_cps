@@ -104,17 +104,15 @@
 
 ### 서버 내, 데이터 관리 
 
-데이터 관리 및 처리:	flask, Browser local storage 활용 예정 
-
-* 실제 서비스보다 작은 시연 상황의 규모를 고려, Database 구축은 지양함 
+- 데이터 관리 및 처리:	flask, Browser local storage 활용 예정 
+> 실제 서비스보다 작은 시연 상황의 규모를 고려, Database 구축은 지양함 
 
  
 
 ### 시연을 위한, 동작 과정 시각화 
 
-웹 구현: HTML, CSS, JavaScript(Vanilla) 사용 
-
-* 세부 동작 과정은 Browser console log를 웹 페이지에 시각화 
+- 웹 구현: HTML, CSS, JavaScript(Vanilla) 사용 
+> 세부 동작 과정은 Browser console log를 웹 페이지에 시각화 
 
  
 
